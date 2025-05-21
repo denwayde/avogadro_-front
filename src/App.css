@@ -1,0 +1,63 @@
+@font-face {
+  font-family: 'CocoBikeRegular';
+  src: url('fonts/CocoBikeR.woff') format('woff');
+  /* Add more formats for compatibility if necessary */
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CocoBikerBold';
+  src: url('fonts/CocoBikeR-Bold.woff') format('woff');
+  /* Add more formats for compatibility if necessary */
+  font-weight: bold;
+  font-style: normal;
+}
+
+.my-brand{
+  /* font-family: 'CocoBikerBold', sans-serif; */
+font-family: 'CocoBikeRegular', sans-serif;
+}
+
+.baner-area{
+  background-image: url('img/banner.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+}
+
+.baner-text {
+  color: #ffffff;
+}
+.navbar-collapse {
+  flex-grow: 0;
+}
+.baner-text-wrapper{
+  height: 75vh;
+}
+
+.header-div-ul{
+  width: 100%;
+}
+
+.header-div{
+  width: 30%;
+}
+
+@media (max-width: 1290px) {
+  .header-div{
+    width: 40%;
+  }
+}
+
+
+
+.btn, .nav-link {
+  text-align: center;
+  font-size: .7em;
+  line-height: 1em;
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10px 15px;
+}
+
+
