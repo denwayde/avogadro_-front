@@ -48,7 +48,11 @@ font-family: 'CocoBikeRegular', sans-serif;
     width: 40%;
   }
 }
-
+@media (min-width: 1560px) {
+  .header-div{
+    width: 23%;
+  }
+}
 
 
 .btn, .nav-link {
