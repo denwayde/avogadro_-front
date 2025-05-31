@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Banner() {
     return (
@@ -11,7 +12,7 @@ function Banner() {
                         <div className="baner-text">
                             <h1>Приветствуем в Школе Авогадро</h1>
                             <p>Объединяем любознательных детей, подростков и взрослых,<br/>которых учат лучшие эксперты с реальными достижениями!</p>
-                            <a href="#" className="btn btn-warning btn-lg">Подробнее</a>
+                            <Link to="/" className="btn btn-warning btn-lg">Подробнее</Link>
                         </div>
                     </div>
                 </div>

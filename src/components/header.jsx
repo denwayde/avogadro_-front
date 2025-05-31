@@ -3,6 +3,7 @@ import { BiAtom } from "react-icons/bi";
 import RegisteModal from './registeModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsModalVisible } from '../features/openRegisterModal';
+import { Link } from 'react-router-dom';
 
 function Header() {
 
@@ -16,10 +17,7 @@ function Header() {
         <>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <a className="navbar-brand my-brand" href="#">
-                    <BiAtom/> авогадро
-                </a>
-
+                <Link to="/" className="navbar-brand my-brand"><BiAtom/> АВОГАДРО</Link>
 
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -28,19 +26,19 @@ function Header() {
                 <div className="collapse navbar-collapse header-div" id="navbarTogglerDemo02">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 justify-content-evenly header-div-ul">
                         <li className="nav-item d-flex align-items-center">
-                            <a className="nav-link active" aria-current="page" href="#">Главная</a>
+                            <Link to="/" className="nav-link active">Главная</Link>
                         </li>
                         <li className="nav-item d-flex align-items-center">
-                            <a className="nav-link" href="#">Курсы</a>
+                            <Link className="nav-link" to="#">Курсы</Link>
                         </li>
                         <li className="nav-item d-flex align-items-center">
-                            <a className="nav-link" href="#">Статьи</a>
+                            <Link className="nav-link" to="/posts">Статьи</Link>
                         </li>
                         <li className="nav-item d-flex align-items-center">
-                            <a className="btn btn-outline-success" href="#">Войти</a>
+                            <Link className="btn btn-outline-success" to="#">Войти</Link>
                         </li>
                         <li className="nav-item d-flex align-items-center">
-                            <a className="btn btn-outline-danger" onClick={changeVisible}>Подать заявку</a>
+                            <Link className="btn btn-outline-primary" onClick={changeVisible}>Подать заявку</Link>
                         </li>
                     </ul>
                 {/* <form className="d-flex" role="search">
