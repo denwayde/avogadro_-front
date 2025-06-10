@@ -168,7 +168,7 @@ function RegisteModal({ clName, dsp }) {
         try {
             setIsSubmitting(true);
             
-            const response = await axios.post('http://localhost:5000/api/applications', formData);
+            const response = await axios.post('http://185.218.0.226:5000/api/applications', formData);
             
             if (response.status === 200 || response.status === 201) {
                 setSubmitSuccess(true);
