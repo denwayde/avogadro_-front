@@ -38,7 +38,6 @@ function RegisteModal({ clName, dsp }) {
 
     const changeVisible = () => {
         dispatch(setIsModalVisible(!isVisible));
-        // Reset form when closing
         if (isVisible) {
             resetForm();
         }
@@ -121,12 +120,16 @@ function RegisteModal({ clName, dsp }) {
         }));
     };
 
-    const getValidationIcon = (name) => {
-        if (formData[name] === '') return null;
-        if (touched[name] || submitAttempted) {
-            return errors[name] ? '❌' : '✔';
-        }
-        return null;
+    // Функция для определения классов валидации
+    const getValidationClass = (name) => {
+        // Не показываем статус, если поле не было затронуто и нет попытки отправки
+        if (!touched[name] && !submitAttempted) return '';
+        
+        // Если поле пустое - не показываем статус
+        if (formData[name] === '') return '';
+        
+        // Возвращаем соответствующий класс в зависимости от валидности
+        return errors[name] ? 'is-invalid' : 'is-valid';
     };
 
     const handleSubmit = async () => {
@@ -134,19 +137,21 @@ function RegisteModal({ clName, dsp }) {
         setSubmitError(null);
         setSubmitSuccess(false);
         
-        // Mark all fields as touched
-        const allTouched = {};
-        Object.keys(touched).forEach(key => {
-            allTouched[key] = true;
+        // Помечаем все поля как touched
+        setTouched({
+            fullName: true,
+            phone: true,
+            email: true,
+            course: true,
+            format: true
         });
-        setTouched(allTouched);
         
-        // Validate all fields
+        // Валидируем все поля
         Object.keys(formData).forEach(key => {
             validateField(key, formData[key]);
         });
         
-        // Check if any field is empty
+        // Проверяем на пустые поля
         const hasEmptyFields = Object.values(formData).some(val => val === '');
         const hasErrors = Object.values(errors).some(error => error);
         
@@ -163,12 +168,10 @@ function RegisteModal({ clName, dsp }) {
         try {
             setIsSubmitting(true);
             
-            // Отправка данных на сервер
             const response = await axios.post('http://localhost:5000/api/applications', formData);
             
             if (response.status === 200 || response.status === 201) {
                 setSubmitSuccess(true);
-                // Очищаем форму через 2 секунды после успешной отправки
                 setTimeout(() => {
                     resetForm();
                     changeVisible();
@@ -201,7 +204,7 @@ function RegisteModal({ clName, dsp }) {
                                     <div className="col-sm-10 input-group">
                                         <input 
                                             type="text" 
-                                            className={`form-control ${(touched.fullName || submitAttempted) && errors.fullName ? 'is-invalid' : ''}`}
+                                            className={`form-control ${getValidationClass('fullName')}`}
                                             placeholder='ФИО'
                                             name="fullName"
                                             value={formData.fullName}
@@ -209,10 +212,12 @@ function RegisteModal({ clName, dsp }) {
                                             onBlur={handleBlur}
                                             disabled={isSubmitting}
                                         />
-                                        <span className="input-group-text">{getValidationIcon('fullName')}</span>
                                     </div>
                                     {(touched.fullName || submitAttempted) && formData.fullName === '' && (
                                         <div className="text-danger small mt-1">Это поле обязательно для заполнения</div>
+                                    )}
+                                    {(touched.fullName || submitAttempted) && errors.fullName && formData.fullName !== '' && (
+                                        <div className="text-danger small mt-1">Введите ФИО (минимум 3 слова)</div>
                                     )}
                                 </div>
                                 
@@ -220,7 +225,7 @@ function RegisteModal({ clName, dsp }) {
                                     <div className="col-sm-10 input-group">
                                         <input 
                                             type="tel" 
-                                            className={`form-control ${(touched.phone || submitAttempted) && errors.phone ? 'is-invalid' : ''}`}
+                                            className={`form-control ${getValidationClass('phone')}`}
                                             placeholder='+7 999 888 77 66'
                                             name="phone"
                                             value={formData.phone}
@@ -228,10 +233,12 @@ function RegisteModal({ clName, dsp }) {
                                             onBlur={handleBlur}
                                             disabled={isSubmitting}
                                         />
-                                        <span className="input-group-text">{getValidationIcon('phone')}</span>
                                     </div>
                                     {(touched.phone || submitAttempted) && formData.phone === '' && (
                                         <div className="text-danger small mt-1">Это поле обязательно для заполнения</div>
+                                    )}
+                                    {(touched.phone || submitAttempted) && errors.phone && formData.phone !== '' && (
+                                        <div className="text-danger small mt-1">Введите корректный номер телефона</div>
                                     )}
                                 </div>
 
@@ -239,7 +246,7 @@ function RegisteModal({ clName, dsp }) {
                                     <div className="col-sm-10 input-group">
                                         <input 
                                             type="email" 
-                                            className={`form-control ${(touched.email || submitAttempted) && errors.email ? 'is-invalid' : ''}`}
+                                            className={`form-control ${getValidationClass('email')}`}
                                             placeholder='examle@mail.ru'
                                             name="email"
                                             value={formData.email}
@@ -247,17 +254,19 @@ function RegisteModal({ clName, dsp }) {
                                             onBlur={handleBlur}
                                             disabled={isSubmitting}
                                         />
-                                        <span className="input-group-text">{getValidationIcon('email')}</span>
                                     </div>
                                     {(touched.email || submitAttempted) && formData.email === '' && (
                                         <div className="text-danger small mt-1">Это поле обязательно для заполнения</div>
+                                    )}
+                                    {(touched.email || submitAttempted) && errors.email && formData.email !== '' && (
+                                        <div className="text-danger small mt-1">Введите корректный email</div>
                                     )}
                                 </div>
 
                                 <div className="row mb-3">
                                     <div className="col-sm-10 input-group">
                                         <select 
-                                            className={`form-select ${(touched.course || submitAttempted) && errors.course ? 'is-invalid' : ''}`}
+                                            className={`form-select ${getValidationClass('course')}`}
                                             name="course"
                                             value={formData.course}
                                             onChange={handleChange}
@@ -269,7 +278,6 @@ function RegisteModal({ clName, dsp }) {
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
                                         </select>
-                                        <span className="input-group-text">{getValidationIcon('course')}</span>
                                     </div>
                                     {(touched.course || submitAttempted) && formData.course === '' && (
                                         <div className="text-danger small mt-1">Это поле обязательно для заполнения</div>
@@ -279,7 +287,7 @@ function RegisteModal({ clName, dsp }) {
                                 <div className="row mb-3">
                                     <div className="col-sm-10 input-group">
                                         <select 
-                                            className={`form-select ${(touched.format || submitAttempted) && errors.format ? 'is-invalid' : ''}`}
+                                            className={`form-select ${getValidationClass('format')}`}
                                             name="format"
                                             value={formData.format}
                                             onChange={handleChange}
@@ -291,7 +299,6 @@ function RegisteModal({ clName, dsp }) {
                                             <option value="2">Two</option>
                                             <option value="3">Three</option>
                                         </select>
-                                        <span className="input-group-text">{getValidationIcon('format')}</span>
                                     </div>
                                     {(touched.format || submitAttempted) && formData.format === '' && (
                                         <div className="text-danger small mt-1">Это поле обязательно для заполнения</div>
